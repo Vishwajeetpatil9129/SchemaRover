@@ -41,18 +41,34 @@ def lexical_match(nl_query: str, schema: dict) -> list[str]:
     return list(matched_tables)
 
 
+# if __name__ == "__main__":
+#     from schema_introspect import get_schema
+
+#     schema = get_schema()
+
+#     test_queries = [
+#         "List all actors who acted in the movie "ACADEMY DINOSAUR""
+#         # "show projects and their clients",
+#         # "which department has the highest paid employee",
+#     ]
+
+#     for q in test_queries:
+#         matched = lexical_match(q, schema)
+#         print(f"Query: {q}")
+#         print(f"Matched tables: {matched}\n")
 if __name__ == "__main__":
     from schema_introspect import get_schema
 
     schema = get_schema()
 
-    test_queries = [
-        "list all employees with their salary",
-        "show projects and their clients",
-        "which department has the highest paid employee",
-    ]
+    while True:
+        q = input("\nEnter your natural language query (or type 'exit' to quit): ")
 
-    for q in test_queries:
+        if q.lower() == "exit":
+            print("Exiting...")
+            break
+
         matched = lexical_match(q, schema)
-        print(f"Query: {q}")
-        print(f"Matched tables: {matched}\n")
+
+        print(f"\nQuery: {q}")
+        print(f"Matched tables: {matched}")

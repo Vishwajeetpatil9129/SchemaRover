@@ -6,8 +6,10 @@ Reads a SQLite DB via SQLAlchemy and returns a structured schema dict.
 from sqlalchemy import create_engine, inspect
 
 
-def get_schema(db_path: str = "sqlite:///company.db") -> dict:
+def get_schema(db_path: str = "mysql+pymysql://root:Vishwajeet%402005@127.0.0.1:3306/sakila") -> dict:
+
     engine = create_engine(db_path)
+    
     inspector = inspect(engine)
 
     schema = {"tables": {}}
