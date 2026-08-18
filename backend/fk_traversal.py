@@ -1,8 +1,10 @@
 """
 Step: FK Graph Traversal
-Given the lexically matched tables, expand the set by walking the
-foreign key graph so that join-connector tables are included even
-if they weren't mentioned by name in the NL query.
+Given the lexically/semantically matched tables, expand the set by
+walking the foreign key graph so that join-connector tables are
+included even if they weren't mentioned by name in the NL query.
+(Unchanged logic -- included here just so the backend/ folder is
+complete and consistent.)
 """
 
 from collections import defaultdict
@@ -47,9 +49,11 @@ def expand_with_fk_traversal(matched_tables: list[str], schema: dict, max_hops: 
 
 if __name__ == "__main__":
     from schema_introspect import get_schema
-    from lexical_match import lexical_match
+    from hybrid_matcher import hybrid_match
+    from Semantic_matcher import SchemaEmbedder
 
     schema = get_schema()
+    embedder = SchemaEmbedder(schema)
 
     test_queries = [
         "show employees and their project hours",
@@ -58,8 +62,8 @@ if __name__ == "__main__":
     ]
 
     for q in test_queries:
-        lexical_matches = lexical_match(q, schema)
-        expanded = expand_with_fk_traversal(lexical_matches, schema, max_hops=1)
+        seed_matches = hybrid_match(q, schema, embedder)
+        expanded = expand_with_fk_traversal(seed_matches, schema, max_hops=1)
         print(f"Query: {q}")
-        print(f"Lexical matches: {lexical_matches}")
+        print(f"Hybrid matches: {seed_matches}")
         print(f"After FK expansion: {expanded}\n")

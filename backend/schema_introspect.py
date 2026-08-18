@@ -1,15 +1,29 @@
 """
 Step: Schema Introspection
-Reads a SQLite DB via SQLAlchemy and returns a structured schema dict.
-"""
+Reads a DB via SQLAlchemy and returns a structured schema dict.
 
+DB connection string is read from the DB_URL environment variable
+(see .env.example) instead of being hardcoded, so credentials never
+end up in source control.
+"""
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
 from sqlalchemy import create_engine, inspect
 
+def get_db_url() -> str:
+    return os.environ.get("DB_URL")
 
-def get_schema(db_path: str = "mysql+pymysql://root:Vishwajeet%402005@127.0.0.1:3306/sakila") -> dict:
+
+def get_schema(db_path: str | None = None) -> dict:
+    """
+    db_path: optional explicit SQLAlchemy connection string. If omitted,
+    falls back to the DB_URL environment variable, then DEFAULT_DB_URL.
+    """
+    db_path = db_path or get_db_url()
 
     engine = create_engine(db_path)
-    
     inspector = inspect(engine)
 
     schema = {"tables": {}}

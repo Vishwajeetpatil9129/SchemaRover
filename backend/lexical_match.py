@@ -2,6 +2,7 @@
 Step: Lexical Matching
 Given an NL query and the schema dict from schema_introspect.py,
 find which tables/columns are likely relevant by keyword overlap.
+(Unchanged -- included here just so the backend/ folder is complete.)
 """
 
 import re
@@ -41,21 +42,6 @@ def lexical_match(nl_query: str, schema: dict) -> list[str]:
     return list(matched_tables)
 
 
-# if __name__ == "__main__":
-#     from schema_introspect import get_schema
-
-#     schema = get_schema()
-
-#     test_queries = [
-#         "List all actors who acted in the movie "ACADEMY DINOSAUR""
-#         # "show projects and their clients",
-#         # "which department has the highest paid employee",
-#     ]
-
-#     for q in test_queries:
-#         matched = lexical_match(q, schema)
-#         print(f"Query: {q}")
-#         print(f"Matched tables: {matched}\n")
 if __name__ == "__main__":
     from schema_introspect import get_schema
 
